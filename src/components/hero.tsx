@@ -15,6 +15,8 @@ export const Hero = () => {
                     </h2>
                 </div>
             </div>
+            <div className="hero-foot">
+            </div>
         </section>
     );
 }
