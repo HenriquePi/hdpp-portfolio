@@ -1,21 +1,14 @@
-import React, { FC } from "react";
-import { Greeting } from "components/greeting";
-import { Footer } from "components/footer"
-import { Hero } from "components/hero";
-import { Nav } from "components/navigation";
+import React, { useState, FC } from "react";
+import { Greeting } from "pages/greeting";
+import Layout from "components/layout";
+import { RoutT } from "components/router-test";
 
-export const App: FC = () => (
-  <div className="my-app">
-    <Nav />
-    <Hero /> 
-    <div className="columns is-centered">
-      <div className="column">
-        <h1 className="title is-1 has-text-centered">
-          React Typescript SPA Starter
-        </h1>
-      </div>
+export const App: FC = () => {
+
+  return(
+    <div className="my-app">
+      <Layout>
+      </Layout>
     </div>
-    <Greeting />
-    <Footer />
-  </div>
-);
+  );
+}

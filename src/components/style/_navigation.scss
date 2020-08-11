@@ -12,3 +12,7 @@
     // z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
     // cursor: pointer; /* Add a pointer on hover */
 }
+.nav-overlay .menu-list li ul {
+    border-right:1px solid #dbdbdb;
+    border-left:0px;
+}

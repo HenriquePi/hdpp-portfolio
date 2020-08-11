@@ -6,6 +6,15 @@ export const Greeting: FC = () => {
   const [name, setName] = useState("");
   return (
     <div className="component-greeting">
+
+      <div className="columns is-centered">
+            <div className="column">
+              <h1 className="title is-1 has-text-centered">
+                React Typescript SPA Starter
+              </h1>
+            </div>
+          </div>
+          
       <div className="columns is-centered">
         <div className="column is-4">
           <div className="box">
