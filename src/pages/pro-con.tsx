@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { cnb } from 'cnbuilder';
+import { FaTrash } from "react-icons/fa";
 import "./style/_pro-con.scss";
 import { SSL_OP_NETSCAPE_CA_DN_BUG } from "constants";
 
@@ -24,6 +25,7 @@ const PCGen = () =>{
     const [pcTileState, setPCTileState] = useState<PCTile>({...pcTileDefault}); 
     const [conTileList, setConTileList] = useState<PCTile[]>([]);
     const [proTileList, setProTileList] = useState<PCTile[]>([]);
+    const [pcValue, setPCValue] = useState<number>(0);
 
     const pushToList = (pcTileInfo:PCTile) => {
         if (pcTileInfo.category === Category.CON) {
@@ -31,6 +33,16 @@ const PCGen = () =>{
         }
         setProTileList([...proTileList, pcTileInfo]);
 
+    };
+    const removeFromList = (index:number, category: Category) => {
+        if (category === Category.CON) {
+            const conList = [...conTileList];
+            conList.splice (index);
+            return setConTileList(conList);
+        }
+        const proList = [...proTileList];
+        proList.splice (index);
+        return setProTileList(proList);
     };
     const clearPCTileState = () => {
         setPCTileState({...pcTileDefault});
@@ -49,7 +61,7 @@ const PCGen = () =>{
     const isFormValid = () => {
         return isNumberValid(pcTileState.weight) && isStringValid(pcTileState.detail) && isCategoryValid(pcTileState.category) && isStringValid(pcTileState.subject);
     };
-
+    
     const updateWeight = (index:number, weight: string, category: Category) => {
         if (category === Category.CON) {
             const conList = [...conTileList];
@@ -60,15 +72,43 @@ const PCGen = () =>{
         proList[index].weight = Number.parseInt(weight);
         setProTileList(proList);
     };
+    const printTileList = (listToPrint:PCTile[]) => {
+        return(
+        listToPrint.map(({weight, category, subject, detail}, index) => 
+            <div className="tile is-child box">
+                <div className="columns">
+                    <div className="column is-3">
+                        <div className="select">
+                            <select value={weight} onChange={(event) => updateWeight(index, event.target.value, category)}>
+                                {
+                                    zeroTen.map((num) => <option value={num} key={`option-${num}`}>{num}</option>)
+                                }
+                            </select>
+                        </div>
+                    </div>
+                    <div className="column is-offset-8">
+                        <a onClick={() => removeFromList(index, category)}><FaTrash /></a>
+                    </div>
+                </div>                
+                <h2 className="subtitle">{subject}</h2>
+                <p>{detail}</p>               
+            </div>)
+        );
+    };
+
+    const evaluatePCList = () => {
+        setPCValue(0);
+        proTileList.forEach(({weight}) => {
+            setPCValue(pcValue + weight);
+        });
+        conTileList.forEach(({weight}) => {
+            setPCValue(pcValue - weight);
+        });
+    }
 
     return(
         <div className="PCGen">
-            <p>
-                {isNumberValid(pcTileState.weight).toString()}{pcTileState.weight}/
-                {isStringValid(pcTileState.subject).toString()}{pcTileState.subject}/
-                {isCategoryValid(pcTileState.category).toString()}{pcTileState.category}/
-                {isStringValid(pcTileState.detail).toString()}{pcTileState.detail}
-            </p>
+            <div className='columns column'></div>
             <div className="columns is-centered">
                 <div className="column">
                     <h1 className="title is-1 has-text-centered">Pros Cons {"&"} List Creator</h1>
@@ -82,7 +122,7 @@ const PCGen = () =>{
                 */}
             </div>
             <div className="columns is-centered">
-                <div className="column is-7">
+                <div className="column is-10">
                     <div className="box">
                         <form>
                             <div className="field has-addons">
@@ -127,77 +167,53 @@ const PCGen = () =>{
                                     onChange={(event) => setPCTileState({...pcTileState, detail: event.target.value})}
                                     />
                             </div>
-                            {/* <div className="button has-addons is-right"> */}
-                                <button 
-                                    onClick={() => pushToList(pcTileState)}
-                                    disabled={!isFormValid}
-                                    type="button" 
-                                    className="button is-primary"
-                                    >Add To {pcTileState.category}</button>
-                                <button 
-                                    onClick={clearPCTileState} 
-                                    type="reset" 
-                                    className="button is-light"
-                                    >Clear</button>
-                            {/* </div> */}
+                            <div className="columns">               
+                                <div className="column">
+                                    <button 
+                                        onClick={() => pushToList(pcTileState)}
+                                        disabled={!isFormValid}
+                                        type="button" 
+                                        className="button is-primary"
+                                        >Add To {pcTileState.category}</button>
+                                </div>
+                                <div className="column">
+                                    <button 
+                                        onClick={clearPCTileState} 
+                                        type="reset" 
+                                        className="button is-light"
+                                        >Clear</button>
+                                </div>
+                                <div className="column is-offset-8">
+                                    <button
+                                        onClick={() => evaluatePCList()}
+                                        type="button"
+                                        className="button is-dark"
+                                        >Evaluate</button>
+                                </div>
+                            </div>
                         </form>
                     </div>
                 </div>
             </div>
+                <div className="tile is-ancestor is-center">
+                    <div className="tile is-1"></div>
+                    <div className="tile is-vertical is-parent">
+                        <h1 className="has-text-centered title">Pro</h1>
 
-            <div className="columns">
-                <div className="column is-1"></div>
-                <div className="column">
-                    <div className="box">
-                        <h1 className="has-text-centered">Pro</h1>
-                        {proTileList.map(({weight, category, subject, detail}, index) => 
-                            <div className="box">
-                                
-                                <select value={weight} onChange={(event) => updateWeight(index, event.target.value, category)}>
-                                    {
-                                        zeroTen.map((num) => <option value={num} key={`option-${num}`}>{num}</option>)
-                                    }
-                                </select>
-                                {/* <div className="field">
-                                    <div className="control">
-                                        <input 
-                                            className="input" 
-                                            type="number" 
-                                            value={weight} onChange={(e) => updateWeight(index, e.target.value, category)} />
-                                    </div>
-                                </div> */}
-                                <h2>{subject}</h2>
-                                <p>{detail}</p>               
-                            </div>)}
+                        {printTileList(proTileList)}
+
                     </div>
-                </div>
-                <div className="column">
-                    <div className="box">
-                    <h1 className="has-text-centered">Con</h1>
-                    {conTileList.map((pcTile, index) => 
-                            <div className="box">
-                                {/* <select onChange={(event) => setPCTileState({...pcTileState, weight: parseInt(event.target.value)})}>
-                                    <option value="0">Select Weight</option>
-                                    {
-                                        zeroTen.map((num) => <option value={num} key={`option-${num}`}>{num}</option>)
-                                    }
-                                </select> */}
-                                <div className="field">
-                                    <div className="control">
-                                        <input 
-                                            className="input" 
-                                            type="number" 
-                                            value={pcTile.weight} onChange={(e) => updateWeight(index, e.target.value, pcTile.category)} />
-                                    </div>
-                                </div>
-                                <h2>{pcTile.subject}</h2>
-                                <p>{pcTile.detail}</p>               
-                            </div>)}
+                    <div className="tile is-1"></div>                            
+                    <div className="tile is-vertical is-parent">
+                        <h1 className="has-text-centered title">Con</h1>
+                
+                        {printTileList(conTileList)}
+
                     </div>
+                    <div className="tile is-1"></div>
                 </div>
-                <div className="column is-1"></div>
+                <div className='columns column'></div>
             </div>
-        </div>
     )
 };
 export default PCGen;
