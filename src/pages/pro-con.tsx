@@ -26,6 +26,8 @@ const PCGen = () =>{
     const [conTileList, setConTileList] = useState<PCTile[]>([]);
     const [proTileList, setProTileList] = useState<PCTile[]>([]);
     const [pcValue, setPCValue] = useState<number>(0);
+    const [isEvaluate, setIsEvaluate] = useState(false);
+    const [proCon, setProCon] = useState<Category>(Category.NONE)
 
     const pushToList = (pcTileInfo:PCTile) => {
         if (pcTileInfo.category === Category.CON) {
@@ -37,16 +39,21 @@ const PCGen = () =>{
     const removeFromList = (index:number, category: Category) => {
         if (category === Category.CON) {
             const conList = [...conTileList];
-            conList.splice (index);
+            conList.splice (index, 1);
             return setConTileList(conList);
         }
         const proList = [...proTileList];
-        proList.splice (index);
+        proList.splice (index, 1);
         return setProTileList(proList);
     };
     const clearPCTileState = () => {
-        setPCTileState({...pcTileDefault});
+        setPCTileState({...pcTileDefault, category: pcTileState.category});
     };
+    const clearPCTileList = () => {
+        setProTileList([]);
+        setConTileList([]);
+        setIsEvaluate(false);
+    }
 
 
     const isStringValid = (args:string) => {
@@ -81,7 +88,7 @@ const PCGen = () =>{
                         <div className="select">
                             <select value={weight} onChange={(event) => updateWeight(index, event.target.value, category)}>
                                 {
-                                    zeroTen.map((num) => <option value={num} key={`option-${num}`}>{num}</option>)
+                                    zeroTen.map((num) => <option value={num} key={`option-${num}${category}${index}`}>{num}</option>)
                                 }
                             </select>
                         </div>
@@ -97,17 +104,35 @@ const PCGen = () =>{
     };
 
     const evaluatePCList = () => {
-        setPCValue(0);
-        proTileList.forEach(({weight}) => {
-            setPCValue(pcValue + weight);
-        });
-        conTileList.forEach(({weight}) => {
-            setPCValue(pcValue - weight);
-        });
+        const proEvaluation = proTileList.reduce((proTotal, currentVal) => proTotal + currentVal.weight, 0);
+        const conEvaluation = conTileList.reduce((proTotal, currentVal) => proTotal + currentVal.weight, 0);
+        const evaluation = proEvaluation - conEvaluation;
+        setPCValue(evaluation);
+        console.log("evallist before", pcValue, proEvaluation, conEvaluation, evaluation);
+        setIsEvaluate(true);
+    }
+    const displayEvaluation = () => {
+        let proCon:Category;
+        if (pcValue !== 0) {
+            if (pcValue > 0) proCon = Category.PRO;
+            else proCon = Category.CON
+            return(
+                <div className="tile is-child box">
+                    <h1 className="title">{proCon}cede (by {Math.abs(pcValue)})</h1>
+                </div>                    
+            );
+        }
+        return(
+            <div className="tile is-child box">
+                <h1 className="title">Both sides have equal merit</h1>
+                <p className="subtitle">Perhaps try adding more items, or review the weight of each item</p>
+            </div>  
+        );            
     }
 
     return(
         <div className="PCGen">
+            <p>{pcTileState.weight.toString()}{pcTileState.category.toString()}</p>
             <div className='columns column'></div>
             <div className="columns is-centered">
                 <div className="column">
@@ -115,9 +140,9 @@ const PCGen = () =>{
                 </div>
                 {/* 
                 Drag n drop library to move items from column to column
-                item in rendered onto the list with dropdown weight
-                calculate weight 
-                display the likely path + difference in weight e.g "Negative action desired by 5 points"
+                *item in rendered onto the list with dropdown weight
+                *calculate weight 
+                *display the likely path + difference in weight e.g "Negative action desired by 5 points"
                 local storage for results, give key for access
                 */}
             </div>
@@ -127,15 +152,18 @@ const PCGen = () =>{
                         <form>
                             <div className="field has-addons">
                                 <p className="control">
-                                    {/* "select is-danger" */}
-                                <span className={cnb("select", {"is-danger": !isNumberValid(pcTileState.weight)})}>
-                                    <select onChange={(event) => setPCTileState({...pcTileState, weight: parseInt(event.target.value)})}>
-                                        <option value="0">Select Weight</option>
-                                        {
-                                            zeroTen.map((num) => <option value={num} key={`option-${num}`}>{num}</option>)
-                                        }
-                                    </select>
-                                </span>
+                                    <span className={cnb("select", {"is-danger": !isCategoryValid(pcTileState.category)}, {"is-success": isCategoryValid(pcTileState.category)})}>
+                                        <select 
+                                            onChange={
+                                                (event) => {
+                                                    setPCTileState({...pcTileState, category: event.target.value as Category})
+                                                    }}
+                                            value={pcTileState.category}>
+                                            <option value={Category.NONE}>Select P/C</option>
+                                            <option value={Category.PRO}>Pro</option>
+                                            <option value={Category.CON}>Con</option>
+                                        </select>
+                                    </span>
                                 </p>
                                 <p className="control is-expanded">
                                     <input 
@@ -146,14 +174,12 @@ const PCGen = () =>{
                                         />
                                 </p>
                                 <p className="control">
-                                    <span className={cnb("select", {"is-danger": !isCategoryValid(pcTileState.category)}, {"is-success": isCategoryValid(pcTileState.category)})}>
-                                        <select 
-                                        onChange={
-                                            (event) => {
-                                                setPCTileState({...pcTileState, category: event.target.value as Category})}}>
-                                            <option value={Category.NONE}>Select P/C</option>
-                                            <option value={Category.PRO}>Pro</option>
-                                            <option value={Category.CON}>Con</option>
+                                    <span className={cnb("select", {"is-danger": !isNumberValid(pcTileState.weight)})}>
+                                        <select onChange={(event) => setPCTileState({...pcTileState, weight: parseInt(event.target.value)})}>
+                                            <option value="0">Select Weight</option>
+                                            {
+                                                zeroTen.map((num) => <option value={num} key={`option-${num}`}>{num}</option>)
+                                            }
                                         </select>
                                     </span>
                                 </p>
@@ -167,53 +193,73 @@ const PCGen = () =>{
                                     onChange={(event) => setPCTileState({...pcTileState, detail: event.target.value})}
                                     />
                             </div>
-                            <div className="columns">               
-                                <div className="column">
-                                    <button 
-                                        onClick={() => pushToList(pcTileState)}
-                                        disabled={!isFormValid}
-                                        type="button" 
-                                        className="button is-primary"
-                                        >Add To {pcTileState.category}</button>
+                            <div className="columns">   
+                                <div className="column is-1">
+                                    <span className="field has-addons">
+                                        <button 
+                                            onClick={() => {pushToList({...pcTileState})}}
+                                            disabled={!isFormValid()}
+                                            type="button" 
+                                            className="button is-primary"
+                                            >Add To {pcTileState.category}</button>
+                                        <button 
+                                            onClick={clearPCTileState} 
+                                            type="reset" 
+                                            className="button is-light"
+                                            >Clear</button>
+                                    </span>
                                 </div>
-                                <div className="column">
-                                    <button 
-                                        onClick={clearPCTileState} 
-                                        type="reset" 
-                                        className="button is-light"
-                                        >Clear</button>
-                                </div>
-                                <div className="column is-offset-8">
-                                    <button
-                                        onClick={() => evaluatePCList()}
-                                        type="button"
-                                        className="button is-dark"
-                                        >Evaluate</button>
+                                <div className="column is-offset-9 is-narrow">
+                                    <span className="field has-addons">
+                                        <button
+                                            onClick={() => evaluatePCList()}
+                                            disabled={proTileList.length + conTileList.length === 0}
+                                            type="button"
+                                            className="button is-dark"
+                                            >Evaluate</button>
+                                        <button 
+                                            onClick={clearPCTileList} 
+                                            type="button" 
+                                            className="button is-light"
+                                            >Reset</button>
+                                    </span>
                                 </div>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
-                <div className="tile is-ancestor is-center">
-                    <div className="tile is-1"></div>
-                    <div className="tile is-vertical is-parent">
-                        <h1 className="has-text-centered title">Pro</h1>
-
-                        {printTileList(proTileList)}
-
-                    </div>
-                    <div className="tile is-1"></div>                            
-                    <div className="tile is-vertical is-parent">
-                        <h1 className="has-text-centered title">Con</h1>
-                
-                        {printTileList(conTileList)}
-
-                    </div>
-                    <div className="tile is-1"></div>
+            
+            {
+            isEvaluate && (                                    
+            <div className="tile is-ancestor has-text-centered">                                    
+                <div className="tile is-parent"></div>                               
+                <div className="tile is-parent">                                  
+                    {displayEvaluation()}
                 </div>
-                <div className='columns column'></div>
+                <div className="tile is-parent"></div> 
+            </div>  
+            ) 
+            }                                 
+            <div className="tile is-ancestor is-center">
+                <div className="tile is-1"></div>
+                <div className="tile is-vertical is-parent">
+                    <h1 className="has-text-centered title">Pro</h1>
+
+                    {printTileList(proTileList)}
+
+                </div>
+                <div className="tile is-1"></div>                            
+                <div className="tile is-vertical is-parent">
+                    <h1 className="has-text-centered title">Con</h1>
+            
+                    {printTileList(conTileList)}
+
+                </div>
+                <div className="tile is-1"></div>
             </div>
+            <div className='columns column'></div>
+        </div>
     )
 };
 export default PCGen;
