@@ -37,6 +37,7 @@ const PCGen = () =>{
 
     };
     const removeFromList = (index:number, category: Category) => {
+        setIsEvaluate(!((conTileList.length + proTileList.length) === 1));
         if (category === Category.CON) {
             const conList = [...conTileList];
             conList.splice (index, 1);
@@ -143,6 +144,9 @@ const PCGen = () =>{
                 *item in rendered onto the list with dropdown weight
                 *calculate weight 
                 *display the likely path + difference in weight e.g "Negative action desired by 5 points"
+                *delete button on tiles
+                edit button on tiles
+                align eval+reset buttons
                 local storage for results, give key for access
                 */}
             </div>
