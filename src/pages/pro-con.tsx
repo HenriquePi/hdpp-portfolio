@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { cnb } from 'cnbuilder';
-import { FaTrash } from "react-icons/fa";
+import { FaTrash, FaEdit } from "react-icons/fa";
 import "./style/_pro-con.scss";
 import { SSL_OP_NETSCAPE_CA_DN_BUG } from "constants";
 
@@ -36,17 +36,7 @@ const PCGen = () =>{
         setProTileList([...proTileList, pcTileInfo]);
 
     };
-    const removeFromList = (index:number, category: Category) => {
-        setIsEvaluate(!((conTileList.length + proTileList.length) === 1));
-        if (category === Category.CON) {
-            const conList = [...conTileList];
-            conList.splice (index, 1);
-            return setConTileList(conList);
-        }
-        const proList = [...proTileList];
-        proList.splice (index, 1);
-        return setProTileList(proList);
-    };
+
     const clearPCTileState = () => {
         setPCTileState({...pcTileDefault, category: pcTileState.category});
     };
@@ -55,7 +45,6 @@ const PCGen = () =>{
         setConTileList([]);
         setIsEvaluate(false);
     }
-
 
     const isStringValid = (args:string) => {
         return args.length > 0;
@@ -80,7 +69,7 @@ const PCGen = () =>{
         proList[index].weight = Number.parseInt(weight);
         setProTileList(proList);
     };
-    const printTileList = (listToPrint:PCTile[]) => {
+    const printTableList = (listToPrint:PCTile[]) => {
         return(
         listToPrint.map(({weight, category, subject, detail}, index) => 
             <div className="tile is-child box">
@@ -94,7 +83,10 @@ const PCGen = () =>{
                             </select>
                         </div>
                     </div>
-                    <div className="column is-offset-8">
+                    <div className="column is-offset-7">
+                        <a onClick={() => editTileData(index, category)}><FaEdit /></a>
+                    </div>
+                    <div className="column">
                         <a onClick={() => removeFromList(index, category)}><FaTrash /></a>
                     </div>
                 </div>                
@@ -103,7 +95,20 @@ const PCGen = () =>{
             </div>)
         );
     };
+    const removeFromList = (index:number, category: Category) => {
+        setIsEvaluate(!((conTileList.length + proTileList.length) === 1));
+        if (category === Category.CON) {
+            const conList = [...conTileList];
+            conList.splice (index, 1);
+            return setConTileList(conList);
+        }
+        const proList = [...proTileList];
+        proList.splice (index, 1);
+        return setProTileList(proList);
+    };
+    const editTileData = (index:number, category: Category) => {
 
+    };
     const evaluatePCList = () => {
         const proEvaluation = proTileList.reduce((proTotal, currentVal) => proTotal + currentVal.weight, 0);
         const conEvaluation = conTileList.reduce((proTotal, currentVal) => proTotal + currentVal.weight, 0);
@@ -141,12 +146,12 @@ const PCGen = () =>{
                 </div>
                 {/* 
                 Drag n drop library to move items from column to column
-                *item in rendered onto the list with dropdown weight
-                *calculate weight 
-                *display the likely path + difference in weight e.g "Negative action desired by 5 points"
-                *delete button on tiles
+                COMP    *item in rendered onto the list with dropdown weight
+                COMP    *calculate weight 
+                COMP    *display the likely path + difference in weight e.g "Negative action desired by 5 points"
+                COMP    *delete button on tiles
                 edit button on tiles
-                align eval+reset buttons
+                50%     align eval+reset buttons
                 local storage for results, give key for access
                 */}
             </div>
@@ -250,14 +255,14 @@ const PCGen = () =>{
                 <div className="tile is-vertical is-parent">
                     <h1 className="has-text-centered title">Pro</h1>
 
-                    {printTileList(proTileList)}
+                    {printTableList(proTileList)}
 
                 </div>
                 <div className="tile is-1"></div>                            
                 <div className="tile is-vertical is-parent">
                     <h1 className="has-text-centered title">Con</h1>
             
-                    {printTileList(conTileList)}
+                    {printTableList(conTileList)}
 
                 </div>
                 <div className="tile is-1"></div>
