@@ -38,6 +38,7 @@ export const Nav = () => {
                             <a className="navbar-link">Demo</a>
                             <div className="navbar-dropdown">
                                 <Link to="/demo/pro-con-generator" className="navbar-item is-dark">Pro Con Gen</Link>
+                                
                             </div>
                         </div>
 
@@ -78,7 +79,7 @@ export const Nav = () => {
                 </nav>
                 <Switch>
                     <Route exact path="/">
-                    <PCGen />{/* <Greeting /> */}
+                    <MusicPlayer />{/* <Greeting /> */}
                     </Route>
                     <Route exact path="/about">
                         <About />

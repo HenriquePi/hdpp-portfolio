@@ -150,9 +150,12 @@ const PCGen = () =>{
                 COMP    *calculate weight 
                 COMP    *display the likely path + difference in weight e.g "Negative action desired by 5 points"
                 COMP    *delete button on tiles
-                edit button on tiles
-                50%     align eval+reset buttons
+                50%     *edit button on tiles
+                50%     *align eval+reset buttons
                 local storage for results, give key for access
+
+                bugs
+                    pro/con dropdown does not clear in data
                 */}
             </div>
             <div className="columns is-centered">
