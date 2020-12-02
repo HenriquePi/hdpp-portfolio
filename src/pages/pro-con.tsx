@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { cnb } from 'cnbuilder';
+import { cnb } from "cnbuilder";
 import { FaTrash, FaEdit } from "react-icons/fa";
 import "./style/_pro-con.scss";
 import { SSL_OP_NETSCAPE_CA_DN_BUG } from "constants";
