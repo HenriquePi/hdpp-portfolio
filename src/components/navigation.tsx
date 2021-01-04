@@ -24,9 +24,9 @@ export const Nav = () => {
             <Router>
                 <nav className="navbar is-dark" role="navigation" aria-label="dropdown navigation">
                     <div className="navbar-brand">
-                        <a className="navbar-item"><Link to ="https://github.com/HenriquePi/hdpp-portfolio">
+                        <a className="navbar-item" href="https://github.com/HenriquePi/hdpp-portfolio">
                           SRC
-                          </Link></a>
+                        </a>
                         <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" onClick={handleNavClick}>
                             <span aria-hidden="true"></span>
                             <span aria-hidden="true"></span>
