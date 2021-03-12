@@ -34,12 +34,12 @@ export const Nav = () => {
 
                     <div className="navbar-menu" id="main-menu">
                         <Link to="/about" className="navbar-item">About</Link>
-                    <div className="navbar-item has-dropdown is-hoverable "> 
-                            <a className="navbar-link">Demo</a>
-                            <div className="navbar-dropdown">
-                                <Link to="/demo/pro-con-generator" className="navbar-item is-dark">Pro Con Gen</Link>
-                            </div>
+                      <div className="navbar-item has-dropdown is-hoverable "> 
+                        <a className="navbar-link">Demo</a>
+                        <div className="navbar-dropdown">
+                            <Link to="/demo/pro-con-generator" className="navbar-item is-dark">Pro Con Gen</Link>
                         </div>
+                      </div>
 
                         <div className="navbar-item has-dropdown is-hoverable">
                             <a className="navbar-link">Music</a>
@@ -76,22 +76,20 @@ export const Nav = () => {
                     }
 
                 </nav>
-                <Switch>
+                {/* <Switch>
                     <Route exact path="/">
-                    <PCGen />{/* <Greeting /> */}
+                    <PCGen />
                     </Route>
                     <Route exact path="/about">
                         <About />
                     </Route>
-                    {/* Demo List */}
                     <Route exact path="/demo/pro-con-generator">
                         <PCGen />
                     </Route>
-                    {/* Music Player */}
                     <Route exact path="/music">
                         <MusicPlayer />
                     </Route>
-                </Switch>
+                </Switch> */}
             </Router>
         </div>
     );
