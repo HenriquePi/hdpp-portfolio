@@ -10,10 +10,10 @@ type LayoutType = {
 
 const Layout: React.FC<LayoutType> =({children}:LayoutType) => {
     return(
-        <div>
+        <div className="body">
             {/* <Hero/> */}
             <Nav/>
-            <div className="body">    
+            <div className="content">    
                 {children}
             </div>
             <Footer/>
