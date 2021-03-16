@@ -3,6 +3,7 @@ import { cnb } from 'cnbuilder';
 import { FaTrash, FaEdit } from "react-icons/fa";
 import "./style/_pro-con.scss";
 import { SSL_OP_NETSCAPE_CA_DN_BUG } from "constants";
+import Layout from "components/layout";
 
 enum Category{
     PRO = "Pro",
@@ -137,6 +138,7 @@ const PCGen = () =>{
     }
 
     return(
+        <Layout>
         <div className="PCGen">
             <p>{pcTileState.weight.toString()}{pcTileState.category.toString()}</p>
             <div className='columns column'></div>
@@ -269,6 +271,7 @@ const PCGen = () =>{
             </div>
             <div className='columns column'></div>
         </div>
+        </Layout>
     )
 };
 export default PCGen;
