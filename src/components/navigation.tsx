@@ -78,7 +78,7 @@ export const Nav = () => {
                 </nav>
                 <Switch>
                     <Route exact path="/">
-                    <PCGen />{/* <Greeting /> */}
+                    <About />{/* <Greeting /> */}
                     </Route>
                     <Route exact path="/about">
                         <About />
