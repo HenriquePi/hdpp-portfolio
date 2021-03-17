@@ -6,14 +6,16 @@ import MusicPlayer from 'pages/music';
 import PCGen from './pages/pro-con';
 
 type LocationState = {
-  from: Location;
+  from: {pathname: string};
 } 
 
-export const App: FC = () => {
+const getLocation = () => {
+  return useLocation<LocationState>();
+}
 
+export const App: FC = () => {
+  const location = getLocation();
   // const history = useHistory();
-  console.log();
-  const location = useLocation<LocationState>();
   console.log(location);
   // const prevLocation = React.useRef(location);
   // // const modal = location.state?.modal;
@@ -28,7 +30,7 @@ export const App: FC = () => {
 
   return(
     <Router>
-      <Switch>
+      <Switch location={location}>
         <Route exact path="/" component={About}/>
         <Route exact path="/about" component={About}/>
         <Route exact path="/demo/pro-con-generator" component={PCGen}/>
