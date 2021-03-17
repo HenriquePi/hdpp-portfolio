@@ -21,10 +21,10 @@ export const Nav = () => {
 
     return(
         <div>
-            <Router>
+            {/* <Router> */}
                 <nav className="navbar is-dark" role="navigation" aria-label="dropdown navigation">
                     <div className="navbar-brand">
-                        <a className="navbar-item"><Link to ="/">INO:{isNavOpen.toString()}</Link></a>
+                        <Link to ="/" className="navbar-item">INO:{isNavOpen.toString()}</Link>
                         <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" onClick={handleNavClick}>
                             <span aria-hidden="true"></span>
                             <span aria-hidden="true"></span>
@@ -34,12 +34,12 @@ export const Nav = () => {
 
                     <div className="navbar-menu" id="main-menu">
                         <Link to="/about" className="navbar-item">About</Link>
-                    <div className="navbar-item has-dropdown is-hoverable "> 
-                            <a className="navbar-link">Demo</a>
-                            <div className="navbar-dropdown">
-                                <Link to="/demo/pro-con-generator" className="navbar-item is-dark">Pro Con Gen</Link>
-                            </div>
+                      <div className="navbar-item has-dropdown is-hoverable "> 
+                        <a className="navbar-link">Demo</a>
+                        <div className="navbar-dropdown">
+                            <Link to="/demo/pro-con-generator" className="navbar-item is-dark">Pro Con Gen</Link>
                         </div>
+                      </div>
 
                         <div className="navbar-item has-dropdown is-hoverable">
                             <a className="navbar-link">Music</a>
@@ -76,23 +76,21 @@ export const Nav = () => {
                     }
 
                 </nav>
-                <Switch>
+                {/* <Switch>
                     <Route exact path="/">
-                    <About />{/* <Greeting /> */}
+                    <PCGen />
                     </Route>
                     <Route exact path="/about">
                         <About />
                     </Route>
-                    {/* Demo List */}
                     <Route exact path="/demo/pro-con-generator">
                         <PCGen />
                     </Route>
-                    {/* Music Player */}
                     <Route exact path="/music">
                         <MusicPlayer />
                     </Route>
-                </Switch>
-            </Router>
+                </Switch> */}
+            {/* </Router> */}
         </div>
     );
 }
