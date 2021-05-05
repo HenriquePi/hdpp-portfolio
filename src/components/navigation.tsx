@@ -24,8 +24,9 @@ export const Nav = () => {
             {/* <Router> */}
                 <nav className="navbar is-dark" role="navigation" aria-label="dropdown navigation">
                     <div className="navbar-brand">
-                        <Link to ="/" className="navbar-item">SRC</Link>
-                        <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" onClick={handleNavClick}>
+                        <Link to ="/" className="navbar-item">INO:{isNavOpen.toString()}</Link>
+
+    <a role="button" className="navbar-burger" aria-label="menu" aria-expanded="false" onClick={handleNavClick}>
                             <span aria-hidden="true"></span>
                             <span aria-hidden="true"></span>
                             <span aria-hidden="true"></span>
