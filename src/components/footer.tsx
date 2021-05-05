@@ -7,9 +7,9 @@ export const Footer = () => {
     return (
       <footer className="footer">
           <div className="content has-text-centered">
-                  Name
-                  Email
-                  Title
+                  Henrique Pinto |
+                  pintohenriqued@gmail.com |
+                  Junior Web Developer
           </div>
       </footer>
     );

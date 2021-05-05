@@ -14,9 +14,9 @@ const getLocation = () => {
 }
 
 export const App: FC = () => {
-  const location = getLocation();
+  // const location = getLocation();
   // const history = useHistory();
-  console.log(location);
+  // console.log(location);
   // const prevLocation = React.useRef(location);
   // // const modal = location.state?.modal;
 
@@ -30,7 +30,7 @@ export const App: FC = () => {
 
   return(
     <Router>
-      <Switch location={location}>
+      <Switch>
         <Route exact path="/" component={About}/>
         <Route exact path="/about" component={About}/>
         <Route exact path="/demo/pro-con-generator" component={PCGen}/>

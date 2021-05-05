@@ -10,6 +10,7 @@ enum Category{
     CON = "Con",
     NONE = "..."
 }
+
 type PCTile = {
     subject:string;
     detail:string;
@@ -140,7 +141,7 @@ const PCGen = () =>{
     return(
         <Layout>
         <div className="PCGen">
-            <p>{pcTileState.weight.toString()}{pcTileState.category.toString()}</p>
+            {/* <p>{pcTileState.weight.toString()}{pcTileState.category.toString()}</p> */}
             <div className='columns column'></div>
             <div className="columns is-centered">
                 <div className="column">
